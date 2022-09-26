@@ -7,7 +7,11 @@ const Filter = ({change}) => (
   </div>
 )
 
-const Country = ({country}) =>(
+const Country = ({country}) =>{
+  const [weather, setWeather] = useState({weather: [{icon: "01d"}], main: {temperature: 0}, wind: {speed: 0}})
+  useEffect(() => {axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${country.capital}&appid=${process.env.REACT_APP_API_KEY}`).then(response => {setWeather(response.data)})}, [])
+
+  return(
   <div>
     <h1>{country.name.common}</h1>
     <div>
@@ -19,9 +23,14 @@ const Country = ({country}) =>(
       </ul>
       <img src={country.flags.png} />
     </div>
+    <div>
+      <h3>Weather in {country.capital}</h3>
+      temperature {Math.round(weather.main.temp-275.15,2)} degrees<br/>
+      <img src ={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} /><br/>
+      wind {weather.wind.speed} m/s
+    </div>
   </div>
-)
-
+)}
 const Countries = ({filterString, countries, onlyOne}) => {
 
 
