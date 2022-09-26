@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import numberService from './services/numbers'
 
 const Filter = ({change}) => (
   <div>
@@ -19,13 +19,23 @@ const NameForm = ({submit, nameChange, newName, numberChange, newNumber}) => (
   </div>
 </form>
 )
-const Persons = ({persons, nameFilter})=>(
+const Persons = ({persons, nameFilter, setPersons})=>{
+
+  const poista = (id, name) => {
+    if (window.confirm(`Delete ${name}?`)) {
+      numberService.poista(id).then(()=>(numberService.create()).then(response => {setPersons(response.data)}))
+    }
+    
+  }
+
+  return(
   <div>
-  {persons.filter(person => person.name.toUpperCase().includes(nameFilter)).map(person => <Person key={person.name} name={person.name} number ={person.number}/>)}
+  {persons.filter(person => person.name.toUpperCase().includes(nameFilter))
+  .map(person => <><Person key={person.name} name={person.name} number ={person.number}/> <button onClick={()=>{return poista(person.id, person.name)}}>Delete</button><br/></>)}
   </div>
-)
+)}
 const Person = ({name, number})=>(
-  <>{name} {number}<br /></>
+  <>{name} {number}</>
 )
 
 const App = () => {
@@ -49,18 +59,27 @@ const App = () => {
   const addNewName = (event) => {
     event.preventDefault()
     if (persons.filter(e => e.name===newName).length>0){
-      alert(`${newName} is already added to phonebook`)
+      if (window.confirm(`${newName} is already added to phonebook. Do you want to update?`)){
+        let person = persons.find(n => n.name === newName)
+        let newPerson = { ...person, number: newNumber}
+        numberService.put(newPerson).then(()=>(numberService.create()).then(response => {
+          setPersons(response.data)
+          setNewName('')
+          setNewNumber('')
+        }))
+      } 
     }
     else if (newName !== ''){
       let person = {name: newName, number: newNumber}
-      setPersons(persons.concat(person))
+      numberService.update(person).then((response)=>{
+        setNewName('')
+        setNewNumber('')
+        setPersons(persons.concat(response.data))
+      })
     }
-    setNewName('')
-    setNewNumber('')
-
   }
 
-  useEffect(() => {axios.get('http://localhost:3001/persons').then(response => {setPersons(response.data)})}, [])
+  useEffect(() => {numberService.create().then(response => {setPersons(response.data)})}, [])
 
   return (
     <div>
@@ -69,7 +88,7 @@ const App = () => {
       <h2>Add a new</h2>
       <NameForm submit={addNewName} nameChange={handleNameChange} newName={newName} numberChange={handleNumberChange} newNumber={newNumber}/>
       <h2>Numbers</h2>
-      <Persons persons={persons} nameFilter={newFilter}/>
+      <Persons persons={persons} nameFilter={newFilter} setPersons={setPersons}/>
     </div>
   )
 
