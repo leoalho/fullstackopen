@@ -25,7 +25,7 @@ const Country = ({country}) =>{
     </div>
     <div>
       <h3>Weather in {country.capital}</h3>
-      temperature {Math.round(weather.main.temp-275.15,2)} degrees<br/>
+      temperature {Math.round((weather.main.temp-275.15,2)*100)/100} degrees<br/>
       <img src ={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} /><br/>
       wind {weather.wind.speed} m/s
     </div>
