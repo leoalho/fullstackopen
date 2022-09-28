@@ -3,11 +3,12 @@ var morgan = require('morgan')
 const cors = require('cors')
 
 const app = express()
+
 app.use(express.json())
-//app.use(morgan('tiny'))
 morgan.token('body', (req, res) => JSON.stringify(req.body));
 app.use(morgan(':method :url :status :response-time ms - :res[content-length] :body - :req[content-length]'));
 app.use(cors())
+app.use(express.static('build'))
 
 let henkilot = [
       { 
@@ -76,7 +77,7 @@ app.get('/info', (req,res) => {
     res.send(`Phonebook has info for ${henkilot.length} persons<br>${new Date().toUTCString()}`)
 })
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
   console.log(new Date().toUTCString())
