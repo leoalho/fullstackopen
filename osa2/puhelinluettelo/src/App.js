@@ -1,69 +1,9 @@
 import { useState, useEffect } from 'react'
 import numberService from './services/numbers'
-
-const Filter = ({change}) => (
-  <div>
-  filter shown with: <input onChange={change}/>
-  </div>
-)
-const NameForm = ({submit, nameChange, newName, numberChange, newNumber}) => (
-  <form onSubmit={submit}>
-  <div>
-    name: <input onChange={nameChange} value={newName}/>
-  </div>
-  <div>
-    number: <input onChange={numberChange} value={newNumber}/>
-  </div>
-  <div>
-    <button type="submit">add</button>
-  </div>
-</form>
-)
-const Persons = ({persons, nameFilter, setPersons, setNotification})=>{
-
-  const poista = (id, name) => {
-    if (window.confirm(`Delete ${name}?`)) {
-      setNotification(["delete", name])
-      setTimeout(() => {setNotification(null)}, 5000)
-      numberService.poista(id).then(()=>(numberService.create()).then(response => {setPersons(response.data)}))
-    }
-  }
-
-  return(
-  <div>
-  {persons.filter(person => person.name.toUpperCase().includes(nameFilter))
-  .map(person => <><Person key={person.name} name={person.name} number ={person.number}/> <button onClick={()=>{return poista(person.id, person.name)}}>Delete</button><br/></>)}
-  </div>
-)}
-const Person = ({name, number})=>(
-  <>{name} {number}</>
-)
-
-const Notification = ({type}) => {
-  if (type === null) {
-    return null
-  }
-  if (type[0]==="add")
-  return (
-    <div className="notification add">
-      Added user {type[1]}
-    </div>
-  )
-  if (type[0]==="delete") {
-    return (
-      <div className="notification delete">
-        Deleted user {type[1]}
-      </div>
-    )
-  }
-  if (type[0]==="error"){
-    return (
-      <div className="notification delete">
-      User {type[1]} has already been deleted
-      </div>
-    )
-  }
-}
+import Filter from './components/Filter'
+import NameForm from './components/NameForm'
+import Persons from './components/Persons'
+import Notification from './components/Notification'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -71,6 +11,8 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setFilter] = useState('')
   const [notification, setNotification] = useState(null)
+
+  const filteredPersons = persons.filter(person => person.name.toUpperCase().includes(newFilter))
 
   const handleNameChange = (event)=>{
     setNewName(event.target.value)
@@ -84,6 +26,18 @@ const App = () => {
     setFilter(event.target.value.toUpperCase())
   }
 
+  const notify = (type, nimi)=>{
+    setNotification([type,nimi])
+    setTimeout(() => {setNotification(null)}, 5000)
+  }
+
+  const handleDelete = (id, name) => {
+    if (window.confirm(`Delete ${name}?`)) {
+      notify("delete", name)
+      numberService.poista(id).then(()=>(numberService.create()).then(response => {setPersons(response.data)}))
+    }
+  }
+
   const addNewName = (event) => {
     event.preventDefault()
     if (persons.filter(e => e.name===newName).length>0){
@@ -94,9 +48,10 @@ const App = () => {
           setPersons(response.data)
           setNewName('')
           setNewNumber('')
-          setNotification(["add", newName])
-          setTimeout(() => {setNotification(null)}, 5000)
-        }))
+          notify('add', newName)
+        })).catch(error => {
+          notify('error', newName)
+        })
       } 
     }
     else if (newName !== ''){
@@ -105,10 +60,7 @@ const App = () => {
         setNewName('')
         setNewNumber('')
         setPersons(persons.concat(response.data))
-        setNotification(["add", newName])
-        setTimeout(() => {setNotification(null)}, 5000)
-      }).catch(error => {
-        setNotification(["error", newName])
+        notify('add', newName)
       })
     }
   }
@@ -123,7 +75,7 @@ const App = () => {
       <h2>Add a new</h2>
       <NameForm submit={addNewName} nameChange={handleNameChange} newName={newName} numberChange={handleNumberChange} newNumber={newNumber}/>
       <h2>Numbers</h2>
-      <Persons persons={persons} nameFilter={newFilter} setPersons={setPersons} setNotification={setNotification}/>
+      <Persons persons={filteredPersons} handleDelete={handleDelete}/>
     </div>
   )
 

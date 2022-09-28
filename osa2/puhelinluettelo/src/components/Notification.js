@@ -1,0 +1,27 @@
+const Notification = ({type}) => {
+    if (type === null) {
+      return null
+    }
+    if (type[0]==="add")
+    return (
+      <div className="notification add">
+        Added user {type[1]}
+      </div>
+    )
+    if (type[0]==="delete") {
+      return (
+        <div className="notification delete">
+          Deleted user {type[1]}
+        </div>
+      )
+    }
+    if (type[0]==="error"){
+      return (
+        <div className="notification delete">
+        User {type[1]} has already been deleted
+        </div>
+      )
+    }
+  }
+
+  export default Notification
