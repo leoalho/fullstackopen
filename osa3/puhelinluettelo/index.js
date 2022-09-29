@@ -11,17 +11,6 @@ app.use(morgan(':method :url :status :response-time ms - :res[content-length] :b
 app.use(cors())
 app.use(express.static('build'))
 
-const errorHandler = (error, request, response, next) => {
-    console.log(error.message)
-    
-    if (error.name === 'CastError') {
-        return response.status(400).send({ error: 'malformatted id' })
-    }
-  
-    next(error)
-}
-  
-app.use(errorHandler)
 
 app.get('/api/persons', (req, res) => {
     Number.find({}).then(notes => {
@@ -84,6 +73,18 @@ app.get('/info', (req,res) => {
         res.send(`Phonebook has info for ${notes.length} persons<br>${new Date().toUTCString()}`)
     })
 })
+
+const errorHandler = (error, request, response, next) => {
+    console.log(error.message)
+    
+    if (error.name === 'CastError') {
+        return response.status(400).send({ error: 'malformatted id' })
+    }
+  
+    next(error)
+}
+  
+app.use(errorHandler)
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
