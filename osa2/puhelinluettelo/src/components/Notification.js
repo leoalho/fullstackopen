@@ -15,6 +15,13 @@ const Notification = ({type}) => {
         </div>
       )
     }
+    if (type[0]==="edit"){
+      return (
+        <div className="notification add">
+          Changed phonenumber of {type[1]}
+        </div>
+      )
+    }
     if (type[0]==="error"){
       return (
         <div className="notification delete">

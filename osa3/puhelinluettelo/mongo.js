@@ -13,7 +13,7 @@ mongoose.connect(url)
 
 const numberSchema = new mongoose.Schema({
     name: String,
-    phonenumber: String,
+    number: String,
 })
 
 const Number = mongoose.model('Number', numberSchema)
@@ -29,7 +29,7 @@ if (process.argv.length === 3){
 }else{
     const number = new Number({
         name: process.argv[3],
-        phonenumber: process.argv[4]
+        number: process.argv[4]
     })
 
     number.save().then(result => {

@@ -1,7 +1,8 @@
 const express = require('express')
 var morgan = require('morgan')
 const cors = require('cors')
-
+require('dotenv').config()
+const Number = require('./models/phonenumbers')
 const app = express()
 
 app.use(express.json())
@@ -10,41 +11,27 @@ app.use(morgan(':method :url :status :response-time ms - :res[content-length] :b
 app.use(cors())
 app.use(express.static('build'))
 
-let henkilot = [
-    { 
-        'name': 'Arto Hellas', 
-        'number': '040-123456',
-        'id': 1
-    },
-    { 
-        'name': 'Ada Lovelace', 
-        'number': '39-44-5323523',
-        'id': 2
-    },
-    { 
-        'name': 'Dan Abramov', 
-        'number': '12-43-234345',
-        'id': 3
-    },
-    { 
-        'name': 'Mary Poppendieck', 
-        'number': '39-23-6423122',
-        'id': 4
+const errorHandler = (error, request, response, next) => {
+    console.log(error.message)
+    
+    if (error.name === 'CastError') {
+        return response.status(400).send({ error: 'malformatted id' })
     }
-]
   
+    next(error)
+}
+  
+app.use(errorHandler)
+
 app.get('/api/persons', (req, res) => {
-    res.json(henkilot)
+    Number.find({}).then(notes => {
+        res.json(notes)
+    })
 })
 
 app.post('/api/persons', (req, res) => {
-    const id = Math.floor(Math.random() * 10000)
     const person = req.body
-    if (henkilot.filter(note => note.name === person.name).length>0){
-        return res.status(400).json({ 
-            error: 'Name must be unique.' 
-        })
-    }
+
     if (!person.name){
         return res.status(400).json({
             error: 'Name missing'
@@ -55,26 +42,47 @@ app.post('/api/persons', (req, res) => {
             error: 'Number missing'
         })
     }
-    person.id = id
-    henkilot = henkilot.concat(person)
-    res.json(person)
-
+    
+    const number = new Number({
+        name: person.name,
+        number: person.number
+    })
+    number.save().then(result =>{
+        res.json(number)
+    })
 })
 
-app.get('/api/persons/:id', (req, res) => {
-    const id = parseInt(req.params.id)
-    const person = henkilot.find(person => person.id === id)
-    res.json(person)
+app.get('/api/persons/:id', (req, res, next) => {
+    const id = req.params.id
+    Number.findById(id).then(person => {
+        res.json(person)
+    }).catch(error => next(error))
 })
 
-app.delete('/api/persons/:id', (req, res) => {
-    const id = parseInt(req.params.id)
-    henkilot = henkilot.filter(note => note.id !== id)
-    res.status(204).end()
+app.put('/api/persons/:id', (req,res, next)=>{
+
+    const newPerson = {
+        name: req.body.name,
+        number: req.body.number
+    }
+
+    Number.findByIdAndUpdate(req.params.id, newPerson, { new: true }).then(result =>{
+        res.json(result)
+    }
+    ).catch(error => next(error))
+})
+
+app.delete('/api/persons/:id', (req, res,next) => {
+    const id = req.params.id
+    Number.findByIdAndRemove(id).then(response => {
+        res.status(204).end()
+    }).catch(error => next(error))
 })
 
 app.get('/info', (req,res) => {
-    res.send(`Phonebook has info for ${henkilot.length} persons<br>${new Date().toUTCString()}`)
+    Number.find({}).then(notes => {
+        res.send(`Phonebook has info for ${notes.length} persons<br>${new Date().toUTCString()}`)
+    })
 })
 
 const PORT = process.env.PORT || 3001

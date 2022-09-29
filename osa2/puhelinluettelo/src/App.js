@@ -48,7 +48,7 @@ const App = () => {
           setPersons(response.data)
           setNewName('')
           setNewNumber('')
-          notify('add', newName)
+          notify('edit', newName)
         })).catch(error => {
           notify('error', newName)
         })
