@@ -6,9 +6,31 @@ mongoose.connect(url)
     .then(result => {    console.log('connected to MongoDB')  })
     .catch((error) => {    console.log('error connecting to MongoDB:', error.message)  })
 
+function validator(val){
+    const osat = val.split('-')
+    if (osat.length !== 2){
+        return false
+    }
+    if (osat[0].length !== 2 && osat[0].length !== 3){
+        return false
+    }
+    console.log(val.length>8)
+    return (val.length>8)
+}
+
+//const custom = [validator, 'Phonenumber wrong']
+
 const numberSchema = new mongoose.Schema({
-    name: String,
-    number: String,
+    name:{
+        type: String,
+        minlength: 5,
+        required: true
+    },
+    number:{
+        type: String,
+        validate: validator,
+        required: true
+    }
 })
 
 numberSchema.set('toJSON', {

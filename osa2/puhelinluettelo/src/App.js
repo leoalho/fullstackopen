@@ -50,17 +50,23 @@ const App = () => {
           setNewNumber('')
           notify('edit', newName)
         })).catch(error => {
-          notify('error', newName)
+          notify('error2', error.response.data.error)
+          console.log(error.response.data)
         })
       } 
     }
-    else if (newName !== ''){
+    else{
       let person = {name: newName, number: newNumber}
       numberService.update(person).then((response)=>{
         setNewName('')
         setNewNumber('')
         setPersons(persons.concat(response.data))
         notify('add', newName)
+      }).catch(error => {
+        setNewName('')
+        setNewNumber('')
+        notify('error2', error.response.data.error)
+        console.log(error.response.data)
       })
     }
   }

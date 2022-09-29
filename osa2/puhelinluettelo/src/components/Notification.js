@@ -29,6 +29,13 @@ const Notification = ({type}) => {
         </div>
       )
     }
+    if (type[0]==="error2"){
+      return (
+        <div className="notification delete">
+        {type[1]}
+        </div>
+      )
+    }
   }
 
   export default Notification
