@@ -61,6 +61,40 @@ describe( 'POST', ()=> {
 
 })
 
+describe( 'PUT', () => {
+  const updateBlog ={
+    _id: '5a422a851b54a676234d17f7',
+    title: 'React patterns',
+    author: 'Michael Chan',
+    url: 'https://reactpatterns.com/',
+    likes: 10,
+    __v: 0
+  }
+
+  test('updates the likes of a blog post', async () => {
+    await api.put(`/api/blogs/${updateBlog._id}`).send(updateBlog).expect(200)
+    const response = await api.get(`/api/blogs/${updateBlog._id}`)
+    expect(response.body.likes).toBe(10)
+    
+  })
+  test('does not increase the length of list', async () => {
+    await api.put(`/api/blogs/${updateBlog._id}`).send(updateBlog).expect(200)
+    const response = await api.get('/api/blogs')
+    expect(response.body).toHaveLength(2)
+  })
+})
+
+describe('DELETE', () => {
+  const id = '5a422a851b54a676234d17f7'
+  test('request is working', async () => {
+    await api.delete(`/api/blogs/${id}`).expect(204)
+  })
+  test('decreases length of list by one', async () => {
+    await api.delete(`/api/blogs/${id}`)
+    const response = await api.get('/api/blogs')
+    expect(response.body).toHaveLength(1)
+  })
+})
 
 afterAll(() => {
   mongoose.connection.close()
