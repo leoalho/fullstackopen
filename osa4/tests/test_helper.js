@@ -100,4 +100,16 @@ const noUrl = {
   __v: 0 
 }
 
-module.exports = {initialBlogs, helperblogs, properPost, noLikes, noTitle, noUrl}
+const user1 = {
+  username: 'lepanderus',
+  name: 'Leo Alho',
+  passwordHash: '$2a$10$UGhbHoE2FZqMvpXzAciXf.rYYTqy.ejYH/agHIFRz6XbpQgjFtVPO' 
+}
+
+const user2 = {
+  username: 'toto',
+  name: 'Torbjörn Alho',
+  password: 'Toto1234'
+}
+
+module.exports = {initialBlogs, helperblogs, properPost, noLikes, noTitle, noUrl, user1, user2}
