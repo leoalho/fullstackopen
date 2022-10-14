@@ -36,6 +36,13 @@ describe( 'Users', () => {
       expect(response.body).toHaveLength(2)
     })
 
+    test('Username has to be unique', async() => {
+      await api
+        .post('/api/users')
+        .send(helper.user3)
+        .expect(400)
+    })
+
   })
 })
 describe( 'Blogposts', () => {

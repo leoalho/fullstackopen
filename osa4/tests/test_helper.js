@@ -112,4 +112,10 @@ const user2 = {
   password: 'Toto1234'
 }
 
-module.exports = {initialBlogs, helperblogs, properPost, noLikes, noTitle, noUrl, user1, user2}
+const user3 = {
+  username: 'lepanderus',
+  name: 'Arno Alho',
+  password: 'azx007azx007'
+}
+
+module.exports = {initialBlogs, helperblogs, properPost, noLikes, noTitle, noUrl, user1, user2, user3}
