@@ -43,6 +43,18 @@ describe( 'Users', () => {
         .expect(400)
     })
 
+    test('USername and password have to be longer than 3 characters', async() => {
+      await api
+        .post('/api/users')
+        .send(helper.shortUsername)
+        .expect(400)
+
+      await api
+        .post('/api/users')
+        .send(helper.shortPswd)
+        .expect(400)
+    })
+
   })
 })
 describe( 'Blogposts', () => {

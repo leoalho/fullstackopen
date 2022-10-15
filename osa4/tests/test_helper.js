@@ -118,4 +118,16 @@ const user3 = {
   password: 'azx007azx007'
 }
 
-module.exports = {initialBlogs, helperblogs, properPost, noLikes, noTitle, noUrl, user1, user2, user3}
+const shortUsername = {
+  username: 'le',
+  name: 'Arno Alho',
+  password: 'azx007azx007'
+}
+
+const shortPswd = {
+  username: 'lep',
+  name: 'Arno Alho',
+  password: 'az'
+}
+
+module.exports = {initialBlogs, helperblogs, properPost, noLikes, noTitle, noUrl, user1, user2, user3, shortUsername, shortPswd}
