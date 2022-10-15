@@ -14,7 +14,11 @@ const userSchema = mongoose.Schema({
   passwordHash: {
     type: String,
     required: true
-  }
+  },
+  blogPosts: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Blog'
+  }]
 })
 
 userSchema.set('toJSON', {

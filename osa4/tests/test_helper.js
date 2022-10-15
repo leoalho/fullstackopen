@@ -101,6 +101,8 @@ const noUrl = {
 }
 
 const user1 = {
+  _id: '5a422b3a1b54a676234d17f8',
+  __v: 0,
   username: 'lepanderus',
   name: 'Leo Alho',
   passwordHash: '$2a$10$UGhbHoE2FZqMvpXzAciXf.rYYTqy.ejYH/agHIFRz6XbpQgjFtVPO' 
