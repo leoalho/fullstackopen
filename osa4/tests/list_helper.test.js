@@ -45,6 +45,7 @@ describe('favourite blog', () => {
       author: 'Edsger W. Dijkstra',
       url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
       likes: 12,
+      user: '5a422b3a1b54a676234d17f8',
       __v: 0
     }
     const result = favouriteBlog(helperblogs)

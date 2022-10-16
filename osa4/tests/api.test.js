@@ -9,7 +9,7 @@ const api = supertest(app)
 describe( 'Users', () => {
   beforeEach(async () => {
     await User.deleteMany({})
-    let user = await new User(helper.user1).save()
+    await new User(helper.user1).save()
   })
   describe( 'GET', ()=>{
     test('request is working', async () => {
@@ -43,7 +43,7 @@ describe( 'Users', () => {
         .expect(400)
     })
 
-    test('USername and password have to be longer than 3 characters', async() => {
+    test('Username and password have to be longer than 3 characters', async() => {
       await api
         .post('/api/users')
         .send(helper.shortUsername)
