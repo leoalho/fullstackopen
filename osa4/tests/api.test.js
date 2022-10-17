@@ -19,7 +19,7 @@ describe( 'Users', () => {
         .expect('Content-Type', /application\/json/)
     })
     test('there is one user', async () => {
-      const response = await api.get('/api/blogs')
+      const response = await api.get('/api/users')
       expect(response.body).toHaveLength(1)
     })
   })
@@ -86,10 +86,14 @@ describe( 'Blogposts', () => {
   })
 
   describe( 'POST', ()=> {
+
     test('request is working', async () => {
+      const userdata = await api.post('/api/login').send({username: 'lepanderus', password: 'mummomies'})
+      const token = `bearer ${userdata.body.token.toString()}`
       await api
         .post('/api/blogs')
         .send(helper.properPost)
+        .set('Authorization', token)
         .expect(201)
         .expect('Content-Type', /application\/json/)
 
@@ -99,16 +103,29 @@ describe( 'Blogposts', () => {
     })
 
     test('no likes value get set to 0', async () => {
-      const response = await api.post('/api/blogs').send(helper.noLikes)
+      const userdata = await api.post('/api/login').send({username: 'lepanderus', password: 'mummomies'})
+      const token = `bearer ${userdata.body.token.toString()}`
+      const response = await api.post('/api/blogs').send(helper.noLikes).set('Authorization', token)
       expect(response.body.likes).toBe(0)
     })
 
     test('should throw badrequest error when no title is given', async () => {
-      await api.post('/api/blogs').send(helper.noTitle).expect(400)
+      const userdata = await api.post('/api/login').send({username: 'lepanderus', password: 'mummomies'})
+      const token = `bearer ${userdata.body.token.toString()}`
+      await api.post('/api/blogs').send(helper.noTitle).set('Authorization', token).expect(400)
     })
 
     test('should throw badrequest error when no url is given', async () => {
-      await api.post('/api/blogs').send(helper.noUrl).expect(400)
+      const userdata = await api.post('/api/login').send({username: 'lepanderus', password: 'mummomies'})
+      const token = `bearer ${userdata.body.token.toString()}`
+      await api.post('/api/blogs').send(helper.noUrl).set('Authorization', token).expect(400)
+    })
+
+    test('should throw unauthorizes error when no token is giben', async () =>{
+      await api
+        .post('/api/blogs')
+        .send(helper.properPost)
+        .expect(401)
     })
 
   })
@@ -139,10 +156,14 @@ describe( 'Blogposts', () => {
   describe('DELETE', () => {
     const id = '5a422a851b54a676234d17f7'
     test('request is working', async () => {
-      await api.delete(`/api/blogs/${id}`).expect(204)
+      const userdata = await api.post('/api/login').send({username: 'lepanderus', password: 'mummomies'})
+      const token = `bearer ${userdata.body.token.toString()}`
+      await api.delete(`/api/blogs/${id}`).set('Authorization', token).expect(204)
     })
     test('decreases length of list by one', async () => {
-      await api.delete(`/api/blogs/${id}`)
+      const userdata = await api.post('/api/login').send({username: 'lepanderus', password: 'mummomies'})
+      const token = `bearer ${userdata.body.token.toString()}`
+      await api.delete(`/api/blogs/${id}`).set('Authorization', token)
       const response = await api.get('/api/blogs')
       expect(response.body).toHaveLength(1)
     })

@@ -80,7 +80,6 @@ const properPost = {
   title: 'Canonical string reduction',
   author: 'Edsger W. Dijkstra',
   url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
-  user: '5a422b3a1b54a676234d17f8',
   likes: 12,
   __v: 0
 }
@@ -117,7 +116,7 @@ const user1 = {
   __v: 0,
   username: 'lepanderus',
   name: 'Leo Alho',
-  passwordHash: '$2a$10$UGhbHoE2FZqMvpXzAciXf.rYYTqy.ejYH/agHIFRz6XbpQgjFtVPO' 
+  passwordHash: '$2a$10$Q2opKa2/RkmCJQ8bPjAtfu3.FLKT/80i06gHYcMuHXL8RleRyvfhO' 
 }
 
 const user2 = {
