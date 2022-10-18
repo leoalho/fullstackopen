@@ -14,9 +14,10 @@ const App = () => {
   const [notification, setNotification] = useState(null)
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )  
+    blogService.getAll().then(blogs =>{
+      blogs.sort((a, b) => (a.likes < b.likes) ? 1 : -1)
+      setBlogs( blogs)
+    })  
   }, [])
 
   useEffect(() => {
@@ -59,9 +60,22 @@ const App = () => {
       const newBlog = await blogService.create(blogObject)
       notify(`${newBlog.title} by ${newBlog.author} added`)
       const blogs = await blogService.getAll()
+      blogs.sort((a, b) => (a.likes < b.likes) ? 1 : -1)
       setBlogs(blogs)
     } catch (exception) {
       notify(`Adding of blogpost unsuccesfull`, 'alert')
+    }
+  }
+
+  const addLike = async (blog) => {
+    try {
+      await blogService.updateLikes(blog)
+      notify('Updated likes')
+      const blogs = await blogService.getAll()
+      blogs.sort((a, b) => (a.likes < b.likes) ? 1 : -1)
+      setBlogs(blogs)
+    }catch{
+    notify(`updating likes unsuccesfull`, 'alert')
     }
   }
 
@@ -119,7 +133,7 @@ const App = () => {
       </Togglable>
       
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} addLike={addLike}/>
       )}
     </div>
   )

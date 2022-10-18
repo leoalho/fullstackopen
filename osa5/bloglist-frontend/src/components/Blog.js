@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const Blog = ({blog}) => {
+const Blog = ({blog, addLike}) => {
   const [verbose, setVerbose] = useState(false)
   const blogStyle = {
     paddingTop: 10,
@@ -18,7 +18,7 @@ const Blog = ({blog}) => {
     <div style={blogStyle}>
       {blog.title} {blog.author} <button onClick={toggleVerbose}>Hide</button><br/>
       {blog.url}<br/>
-      likes {blog.likes} <button>Like</button><br/>
+      likes {blog.likes} <button onClick={() => {addLike(blog)}}>Like</button><br/>
       {blog.user.name}
     </div>  
     )
