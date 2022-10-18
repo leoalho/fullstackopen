@@ -79,6 +79,20 @@ const App = () => {
     }
   }
 
+  const removeBlog = async (blog) => {
+    if (window.confirm(`Remove ${blog.title}?`)){
+      try {
+        await blogService.deletePost(blog)
+        notify(`removed ${blog.title}`)
+        const blogs = await blogService.getAll()
+        blogs.sort((a, b) => (a.likes < b.likes) ? 1 : -1)
+        setBlogs(blogs)
+      }catch{
+        notify(`Problem removing post`, 'alert')
+      }
+    }
+  }
+
   const notify = (message, type='info') => {
     setNotification({ message, type })
     setTimeout(() => {
@@ -133,7 +147,7 @@ const App = () => {
       </Togglable>
       
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} addLike={addLike}/>
+        <Blog key={blog.id} blog={blog} addLike={addLike} deleteButton={removeBlog}/>
       )}
     </div>
   )

@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
-const Blog = ({blog, addLike}) => {
+const Blog = ({blog, addLike, deleteButton}) => {
   const [verbose, setVerbose] = useState(false)
+  const [removeButton, setRemovebutton] = useState('inline')
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -12,6 +13,16 @@ const Blog = ({blog, addLike}) => {
   const toggleVerbose = () =>{
     setVerbose(!verbose)
   }
+
+  useEffect(() => {
+    if (blog.user.username === window.localStorage.getItem('loggedUser').username){
+      setRemovebutton('inline')
+    }
+  }, [])
+
+  const style = {
+    display: removeButton
+  }
   
   if (verbose){
     return(
@@ -19,7 +30,8 @@ const Blog = ({blog, addLike}) => {
       {blog.title} {blog.author} <button onClick={toggleVerbose}>Hide</button><br/>
       {blog.url}<br/>
       likes {blog.likes} <button onClick={() => {addLike(blog)}}>Like</button><br/>
-      {blog.user.name}
+      {blog.user.name}<br/>
+      <button onClick={()=>{deleteButton(blog)}} style={style}>Remove</button>
     </div>  
     )
   }
