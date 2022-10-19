@@ -8,25 +8,25 @@ import Togglable from './components/Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState('') 
-  const [password, setPassword] = useState('') 
-  const [user, setUser] = useState(null) 
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [user, setUser] = useState(null)
   const [notification, setNotification] = useState(null)
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>{
+    blogService.getAll().then(blogs => {
       blogs.sort((a, b) => (a.likes < b.likes) ? 1 : -1)
       setBlogs( blogs)
-    })  
+    })
   }, [])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-      setUser(user)      
+      setUser(user)
       //noteService.setToken(user.token)
-      }
+    }
   }, [])
 
   const handleLogin = async (event) => {
@@ -63,7 +63,7 @@ const App = () => {
       blogs.sort((a, b) => (a.likes < b.likes) ? 1 : -1)
       setBlogs(blogs)
     } catch (exception) {
-      notify(`Adding of blogpost unsuccesfull`, 'alert')
+      notify('Adding of blogpost unsuccesfull', 'alert')
     }
   }
 
@@ -74,8 +74,8 @@ const App = () => {
       const blogs = await blogService.getAll()
       blogs.sort((a, b) => (a.likes < b.likes) ? 1 : -1)
       setBlogs(blogs)
-    }catch{
-    notify(`updating likes unsuccesfull`, 'alert')
+    }catch (exception){
+      notify('updating likes unsuccesfull', 'alert')
     }
   }
 
@@ -87,8 +87,8 @@ const App = () => {
         const blogs = await blogService.getAll()
         blogs.sort((a, b) => (a.likes < b.likes) ? 1 : -1)
         setBlogs(blogs)
-      }catch{
-        notify(`Problem removing post`, 'alert')
+      }catch (exception){
+        notify('Problem removing post', 'alert')
       }
     }
   }
@@ -129,11 +129,11 @@ const App = () => {
     </form>     
     </div>
   )
-  
+
   if (user === null) {
     return loginForm()
   }
-  
+
   return (
     <div>
       <Notification notification={notification} />
@@ -145,7 +145,7 @@ const App = () => {
       <Togglable buttonLabel ='new post'>
         <BlogForm addBlog={addBlog}/>
       </Togglable>
-      
+
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} addLike={addLike} deleteButton={removeBlog}/>
       )}
