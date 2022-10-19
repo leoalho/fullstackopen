@@ -28,7 +28,7 @@ const Blog = ({ blog, addLike, deleteButton }) => {
 
   if (verbose){
     return(
-      <div style={blogStyle}>
+      <div className="blog" style={blogStyle}>
         {blog.title} {blog.author} <button onClick={toggleVerbose}>Hide</button><br/>
         {blog.url}<br/>
         likes {blog.likes} <button onClick={() => {addLike(blog)}}>Like</button><br/>
@@ -38,7 +38,7 @@ const Blog = ({ blog, addLike, deleteButton }) => {
     )
   }
   return(
-    <div style={blogStyle}>
+    <div className="blog" style={blogStyle}>
       {blog.title} {blog.author} <button onClick={toggleVerbose}>View</button>
     </div>
   )}

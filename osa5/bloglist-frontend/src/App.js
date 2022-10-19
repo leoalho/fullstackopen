@@ -25,7 +25,7 @@ const App = () => {
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
-      //noteService.setToken(user.token)
+      blogService.setToken(user.token)
     }
   }, [])
 
@@ -36,16 +36,16 @@ const App = () => {
         username, password,
       })
       setUser(user)
-      
+
       blogService.setToken(user.token)
       window.localStorage.setItem(
         'loggedUser', JSON.stringify(user)
-      ) 
+      )
       setUsername('')
       setPassword('')
       notify(`Logged in as ${user.name}`)
     } catch (exception) {
-      notify(`Wrong credentials`, 'alert')
+      notify('Wrong credentials', 'alert')
     }
   }
 
@@ -102,10 +102,10 @@ const App = () => {
 
   const loginForm = () => (
     <div>
-    <Notification notification={notification} />
-    <h2>Log in to application</h2>
-    <form onSubmit={handleLogin}>
-      <div>
+      <Notification notification={notification} />
+      <h2>Log in to application</h2>
+      <form onSubmit={handleLogin}>
+        <div>
           <label htmlFor="username">Username: </label>
           <input
             type="text"
@@ -114,8 +114,8 @@ const App = () => {
             name="username"
             onChange={({ target }) => setUsername(target.value)}
           />
-      </div>    
-      <div>
+        </div>
+        <div>
           <label htmlFor="password">Password: </label>
           <input
             type="password"
@@ -124,9 +124,9 @@ const App = () => {
             name="password"
             onChange={({ target }) => setPassword(target.value)}
           />
-      </div>
-      <button type="submit">login</button>
-    </form>     
+        </div>
+        <button type="submit">login</button>
+      </form>
     </div>
   )
 
