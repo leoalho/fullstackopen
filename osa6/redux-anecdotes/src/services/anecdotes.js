@@ -4,7 +4,9 @@ const baseUrl = 'http://localhost:3001/anecdotes'
 
 const getAll = async () => {
   const response = await axios.get(baseUrl)
-  return response.data
+  const newState = response.data
+  newState.sort((a,b)=> b.votes-a.votes)
+  return newState
 }
 
 const createNew = async (content) => {
@@ -13,7 +15,17 @@ const createNew = async (content) => {
   return response.data
 }
 
+const vote = async (id) => {
+  const anecdote = await axios.get(`${baseUrl}/${id}`)
+  const changedAnecdote = { 
+    ...anecdote.data, 
+    votes: anecdote.data.votes + 1
+  }
+  await axios.put(`${baseUrl}/${id}`, changedAnecdote)
+}
+
 export default {
   getAll,
   createNew,
+  vote
 }
