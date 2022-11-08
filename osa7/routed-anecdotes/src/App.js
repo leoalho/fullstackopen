@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import {
   BrowserRouter as Router,
-  Routes, Route, Link, useParams
+  Routes, Route, Link, useParams, useNavigate
 } from "react-router-dom"
+import { useField } from './hooks'
 
 const Menu = () => {
   const padding = {
@@ -78,23 +79,36 @@ const Footer = () => (
 )
 
 const CreateNew = (props) => {
-  const [content, setContent] = useState('')
-  const [author, setAuthor] = useState('')
-  const [info, setInfo] = useState('')
+  const navigate = useNavigate()
 
+  const content = useField('text')
+  const author = useField('date')
+  const info = useField('number')
+
+  const inputter = (content) => {
+    const {reset, ...newContent} = content
+    return newContent
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    props.setNotification(content)
+    props.setNotification(`Created ${content.value} by ${author.value}`)
     setInterval(() => {
       props.setNotification('')
     }, 5000)
     props.addNew({
-      content,
-      author,
-      info,
+      content: content.value,
+      author: author.value,
+      info: info.value,
       votes: 0
     })
+    navigate('../', { replace: true })
+  }
+
+  const resetAll = () => {
+    content.reset()
+    author.reset()
+    info.reset()
   }
 
   return (
@@ -103,17 +117,18 @@ const CreateNew = (props) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input name='content' value={content} onChange={(e) => setContent(e.target.value)} />
+          <input {...inputter(content)} />
         </div>
         <div>
           author
-          <input name='author' value={author} onChange={(e) => setAuthor(e.target.value)} />
+          <input {...inputter(author)} />
         </div>
         <div>
           url for more info
-          <input name='info' value={info} onChange={(e)=> setInfo(e.target.value)} />
+          <input {...inputter(info)} />
         </div>
         <button>create</button>
+        <input type="button" value="Reset" onClick={resetAll}></input>
       </form>
     </div>
   )
