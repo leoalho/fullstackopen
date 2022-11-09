@@ -1,17 +1,23 @@
 import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 import Notification from "./components/Notification";
 import BlogForm from "./components/BlogForm";
 import Togglable from "./components/Togglable";
+import { createNotification } from "./reducers/notificationReducer";
+import {
+  BrowserRouter as Router,
+  //Routes, Route, Link
+} from "react-router-dom";
 
 const App = () => {
+  const dispatch = useDispatch();
   const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
-  const [notification, setNotification] = useState(null);
 
   useEffect(() => {
     blogService.getAll().then((blogs) => {
@@ -42,39 +48,41 @@ const App = () => {
       window.localStorage.setItem("loggedUser", JSON.stringify(user));
       setUsername("");
       setPassword("");
-      notify(`Logged in as ${user.name}`);
+      dispatch(createNotification(`Logged in as ${user.name}`));
     } catch (exception) {
-      notify("Wrong credentials", "alert");
+      dispatch(createNotification("Wrong credentials")); //alert
     }
   };
 
   const handleLogout = () => {
     setUser(null);
     window.localStorage.removeItem("loggedUser");
-    notify("Logged out");
+    dispatch(createNotification("Logged out"));
   };
 
   const addBlog = async (blogObject) => {
     try {
       const newBlog = await blogService.create(blogObject);
-      notify(`${newBlog.title} by ${newBlog.author} added`);
+      dispatch(
+        createNotification(`${newBlog.title} by ${newBlog.author} added`)
+      );
       const blogs = await blogService.getAll();
       blogs.sort((a, b) => (a.likes < b.likes ? 1 : -1));
       setBlogs(blogs);
     } catch (exception) {
-      notify("Adding of blogpost unsuccesfull", "alert");
+      dispatch(createNotification("Adding of blogpost unsuccesfull")); //alert
     }
   };
 
   const addLike = async (blog) => {
     try {
       await blogService.updateLikes(blog);
-      notify("Updated likes");
+      dispatch(createNotification("Updated likes"));
       const blogs = await blogService.getAll();
       blogs.sort((a, b) => (a.likes < b.likes ? 1 : -1));
       setBlogs(blogs);
     } catch (exception) {
-      notify("updating likes unsuccesfull", "alert");
+      dispatch(createNotification("updating likes unsuccesfull"));
     }
   };
 
@@ -82,26 +90,19 @@ const App = () => {
     if (window.confirm(`Remove ${blog.title}?`)) {
       try {
         await blogService.deletePost(blog);
-        notify(`removed ${blog.title}`);
+        dispatch(createNotification(`removed ${blog.title}`));
         const blogs = await blogService.getAll();
         blogs.sort((a, b) => (a.likes < b.likes ? 1 : -1));
         setBlogs(blogs);
       } catch (exception) {
-        notify("Problem removing post", "alert");
+        dispatch(createNotification("Problem removing post")); //alert
       }
     }
   };
 
-  const notify = (message, type = "info") => {
-    setNotification({ message, type });
-    setTimeout(() => {
-      setNotification(null);
-    }, 3000);
-  };
-
   const loginForm = () => (
     <div>
-      <Notification notification={notification} />
+      <Notification />
       <h2>Log in to application</h2>
       <form onSubmit={handleLogin}>
         <div>
@@ -134,8 +135,8 @@ const App = () => {
   }
 
   return (
-    <div>
-      <Notification notification={notification} />
+    <Router>
+      <Notification />
       <h2>blogs</h2>
       <p>
         {user.name} logged in <button onClick={handleLogout}>Logout</button>
@@ -153,7 +154,7 @@ const App = () => {
           deleteButton={removeBlog}
         />
       ))}
-    </div>
+    </Router>
   );
 };
 
