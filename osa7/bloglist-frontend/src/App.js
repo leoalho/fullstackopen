@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
@@ -7,6 +8,7 @@ import Notification from "./components/Notification";
 import BlogForm from "./components/BlogForm";
 import Togglable from "./components/Togglable";
 import { createNotification } from "./reducers/notificationReducer";
+import blogReducer, { initializeBlogs, newBlog, voter } from "./reducers/blogReducer";
 import {
   BrowserRouter as Router,
   //Routes, Route, Link
@@ -14,16 +16,19 @@ import {
 
 const App = () => {
   const dispatch = useDispatch();
-  const [blogs, setBlogs] = useState([]);
+  const blogs = useSelector((state) => state.blogs);
+  console.log(blogs)
+  //const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => {
-      blogs.sort((a, b) => (a.likes < b.likes ? 1 : -1));
-      setBlogs(blogs);
-    });
+    dispatch(initializeBlogs());
+    //blogService.getAll().then((blogs) => {
+    //  blogs.sort((a, b) => (a.likes < b.likes ? 1 : -1));
+    //  setBlogs(blogs);
+    //});
   }, []);
 
   useEffect(() => {
@@ -62,13 +67,14 @@ const App = () => {
 
   const addBlog = async (blogObject) => {
     try {
+      /*
       const newBlog = await blogService.create(blogObject);
-      dispatch(
-        createNotification(`${newBlog.title} by ${newBlog.author} added`)
-      );
       const blogs = await blogService.getAll();
       blogs.sort((a, b) => (a.likes < b.likes ? 1 : -1));
       setBlogs(blogs);
+      */
+      dispatch(newBlog(blogObject));
+      dispatch(createNotification(`${blogObject.title} by ${blogObject.author} added`));
     } catch (exception) {
       dispatch(createNotification("Adding of blogpost unsuccesfull")); //alert
     }
@@ -76,11 +82,12 @@ const App = () => {
 
   const addLike = async (blog) => {
     try {
-      await blogService.updateLikes(blog);
+      dispatch(voter(blog))
+      //await blogService.updateLikes(blog);
       dispatch(createNotification("Updated likes"));
-      const blogs = await blogService.getAll();
-      blogs.sort((a, b) => (a.likes < b.likes ? 1 : -1));
-      setBlogs(blogs);
+      //const blogs = await blogService.getAll();
+      //blogs.sort((a, b) => (a.likes < b.likes ? 1 : -1));
+      //setBlogs(blogs);
     } catch (exception) {
       dispatch(createNotification("updating likes unsuccesfull"));
     }
@@ -91,9 +98,9 @@ const App = () => {
       try {
         await blogService.deletePost(blog);
         dispatch(createNotification(`removed ${blog.title}`));
-        const blogs = await blogService.getAll();
-        blogs.sort((a, b) => (a.likes < b.likes ? 1 : -1));
-        setBlogs(blogs);
+        //const blogs = await blogService.getAll();
+        //blogs.sort((a, b) => (a.likes < b.likes ? 1 : -1));
+        //setBlogs(blogs);
       } catch (exception) {
         dispatch(createNotification("Problem removing post")); //alert
       }
