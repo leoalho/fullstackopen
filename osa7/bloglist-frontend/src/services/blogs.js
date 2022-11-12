@@ -12,11 +12,6 @@ const getAll = () => {
   return request.then((response) => response.data);
 };
 
-const getUsers = async () => {
-  const users = await axios.get("/api/users");
-  return users.data;
-};
-
 const create = async (newBlog) => {
   const config = {
     headers: { Authorization: token },
@@ -27,7 +22,6 @@ const create = async (newBlog) => {
 
 const updateLikes = async (blog) => {
   const url = `${baseUrl}/${blog.id}`;
-  //console.log(url);
   const newBlog = {
     title: blog.title,
     author: blog.author,
@@ -45,4 +39,4 @@ const deletePost = async (blog) => {
   await axios.delete(url, config);
 };
 
-export default { getAll, setToken, create, updateLikes, deletePost, getUsers };
+export default { getAll, setToken, create, updateLikes, deletePost };

@@ -3,26 +3,19 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
-import blogService from "./services/blogs";
-
-import Blog from "./components/Blog";
 import Notification from "./components/Notification";
-import BlogForm from "./components/BlogForm";
-import Togglable from "./components/Togglable";
 import LoginForm from "./components/LoginForm";
+import Home from "./components/Home";
+import Users from "./components/Users";
+import User from "./components/User.js";
 
 import { createNotification } from "./reducers/notificationReducer";
-import {
-  initializeBlogs,
-  newBlog,
-  voter,
-  deleter,
-} from "./reducers/blogReducer";
+import { initializeBlogs } from "./reducers/blogReducer";
 import { setUser } from "./reducers/userReducer";
+import { initializeUsers } from "./reducers/usersReducer";
 
 const App = () => {
   const dispatch = useDispatch();
-  const blogs = useSelector((state) => state.blogs);
   const user = useSelector((state) => state.user);
 
   useEffect(() => {
@@ -30,46 +23,15 @@ const App = () => {
     if (loggedUserJSON) {
       const newUser = JSON.parse(loggedUserJSON);
       dispatch(setUser(newUser));
-      blogService.setToken(newUser.token);
     }
     dispatch(initializeBlogs());
+    dispatch(initializeUsers());
   }, []);
 
   const handleLogout = () => {
     dispatch(setUser(null));
     window.localStorage.removeItem("loggedUser");
     dispatch(createNotification("Logged out"));
-  };
-
-  const addBlog = async (blogObject) => {
-    try {
-      dispatch(newBlog(blogObject));
-      dispatch(
-        createNotification(`${blogObject.title} by ${blogObject.author} added`)
-      );
-    } catch (exception) {
-      dispatch(createNotification("Adding of blogpost unsuccesfull")); //alert
-    }
-  };
-
-  const addLike = async (blog) => {
-    try {
-      dispatch(voter(blog));
-      dispatch(createNotification("Updated likes"));
-    } catch (exception) {
-      dispatch(createNotification("updating likes unsuccesfull"));
-    }
-  };
-
-  const removeBlog = async (blog) => {
-    if (window.confirm(`Remove ${blog.title}?`)) {
-      try {
-        dispatch(deleter(blog));
-        dispatch(createNotification(`removed ${blog.title}`));
-      } catch (exception) {
-        dispatch(createNotification("Problem removing post")); //alert
-      }
-    }
   };
 
   if (user === null) {
@@ -79,23 +41,20 @@ const App = () => {
   return (
     <Router>
       <Notification />
-      <h2>blogs</h2>
+      <div>
+        <Link to="/">home </Link>
+        <Link to="/users">users</Link>
+      </div>
+      <h2>Blogs</h2>
       <p>
         {user.name} logged in <button onClick={handleLogout}>Logout</button>
       </p>
-      <h2>create new</h2>
-      <Togglable buttonLabel="new post">
-        <BlogForm addBlog={addBlog} />
-      </Togglable>
 
-      {blogs.map((blog) => (
-        <Blog
-          key={blog.id}
-          blog={blog}
-          addLike={addLike}
-          deleteButton={removeBlog}
-        />
-      ))}
+      <Routes>
+        <Route path="/users" element={<Users />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/users/:id" element={<User />} />
+      </Routes>
     </Router>
   );
 };

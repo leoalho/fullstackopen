@@ -3,7 +3,6 @@ import { useDispatch } from "react-redux";
 import Notification from "./Notification";
 import { createNotification } from "../reducers/notificationReducer";
 import loginService from "../services/login";
-import blogService from "../services/blogs";
 import { setUser } from "../reducers/userReducer";
 
 const LoginForm = () => {
@@ -19,8 +18,6 @@ const LoginForm = () => {
         password,
       });
       dispatch(setUser(user));
-
-      blogService.setToken(user.token);
       window.localStorage.setItem("loggedUser", JSON.stringify(user));
       setUsername("");
       setPassword("");
