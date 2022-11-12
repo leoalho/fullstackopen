@@ -1,11 +1,11 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 import Notification from "./components/Notification";
 import LoginForm from "./components/LoginForm";
 import Home from "./components/Home";
+import Blog from "./components/Blog";
 import Users from "./components/Users";
 import User from "./components/User.js";
 
@@ -40,20 +40,20 @@ const App = () => {
 
   return (
     <Router>
-      <Notification />
       <div>
-        <Link to="/">home </Link>
+        <Link to="/">blogs </Link>
         <Link to="/users">users</Link>
-      </div>
-      <h2>Blogs</h2>
-      <p>
         {user.name} logged in <button onClick={handleLogout}>Logout</button>
-      </p>
+      </div>
+
+      <Notification />
+      <h2>Blog app</h2>
 
       <Routes>
-        <Route path="/users" element={<Users />} />
         <Route path="/" element={<Home />} />
+        <Route path="/users" element={<Users />} />
         <Route path="/users/:id" element={<User />} />
+        <Route path="/blogs/:id" element={<Blog />} />
       </Routes>
     </Router>
   );

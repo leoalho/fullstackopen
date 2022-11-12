@@ -1,19 +1,16 @@
 import { useState, useEffect } from "react";
-import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
+import { voter, deleter } from "../reducers/blogReducer";
+import { createNotification } from "../reducers/notificationReducer";
+import { useParams } from "react-router-dom";
 
-const Blog = ({ blog, addLike, deleteButton }) => {
-  const [verbose, setVerbose] = useState(false);
+const Blog = () => {
+  const dispatch = useDispatch();
+
+  const blogs = useSelector((state) => state.blogs);
+  const id = useParams().id;
+  const blog = blogs.find((n) => n.id === id);
   const [removeButton, setRemovebutton] = useState("inline");
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: "solid",
-    borderWidth: 1,
-    marginBottom: 5,
-  };
-  const toggleVerbose = () => {
-    setVerbose(!verbose);
-  };
 
   useEffect(() => {
     if (
@@ -28,45 +25,59 @@ const Blog = ({ blog, addLike, deleteButton }) => {
     display: removeButton,
   };
 
-  if (verbose) {
-    return (
-      <div className="blog" style={blogStyle}>
-        {blog.title} {blog.author} <button onClick={toggleVerbose}>Hide</button>
-        <br />
-        {blog.url}
-        <br />
-        likes {blog.likes}{" "}
-        <button
-          onClick={() => {
-            addLike(blog);
-          }}
-        >
-          Like
-        </button>
-        <br />
-        {blog.user.name}
-        <br />
-        <button
-          onClick={() => {
-            deleteButton(blog);
-          }}
-          style={style}
-        >
-          Remove
-        </button>
-      </div>
-    );
+  const addLike = async (blog) => {
+    try {
+      dispatch(voter(blog));
+      dispatch(createNotification("Updated likes"));
+    } catch (exception) {
+      dispatch(createNotification("updating likes unsuccesfull"));
+    }
+  };
+
+  const removeBlog = async (blog) => {
+    if (window.confirm(`Remove ${blog.title}?`)) {
+      try {
+        dispatch(deleter(blog));
+        dispatch(createNotification(`removed ${blog.title}`));
+      } catch (exception) {
+        dispatch(createNotification("Problem removing post")); //alert
+      }
+    }
+  };
+
+  if (!blog) {
+    return null;
   }
+
   return (
-    <div className="blog" style={blogStyle}>
-      {blog.title} {blog.author} <button onClick={toggleVerbose}>View</button>
+    <div>
+      <h2>
+        {blog.title} {blog.author}
+      </h2>
+      {blog.url}
+      <br />
+      {blog.likes} likes
+      <button
+        onClick={() => {
+          addLike(blog);
+        }}
+      >
+        Like
+      </button>
+      <br />
+      Added by {blog.user.name}
+      <br />
+      <button
+        onClick={() => {
+          removeBlog(blog);
+        }}
+        style={style}
+      >
+        {" "}
+        Remove{" "}
+      </button>
     </div>
   );
 };
 
-Blog.propTypes = {
-  blog: PropTypes.object.isRequired,
-  addLike: PropTypes.func.isRequired,
-  deleteButton: PropTypes.func.isRequired,
-};
 export default Blog;

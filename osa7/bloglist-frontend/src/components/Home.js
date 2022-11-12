@@ -1,6 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
 
-import Blog from "./Blog";
 import Togglable from "./Togglable";
 import BlogForm from "./BlogForm";
 
@@ -22,24 +21,12 @@ const Home = () => {
     }
   };
 
-  const addLike = async (blog) => {
-    try {
-      dispatch(voter(blog));
-      dispatch(createNotification("Updated likes"));
-    } catch (exception) {
-      dispatch(createNotification("updating likes unsuccesfull"));
-    }
-  };
-
-  const removeBlog = async (blog) => {
-    if (window.confirm(`Remove ${blog.title}?`)) {
-      try {
-        dispatch(deleter(blog));
-        dispatch(createNotification(`removed ${blog.title}`));
-      } catch (exception) {
-        dispatch(createNotification("Problem removing post")); //alert
-      }
-    }
+  const blogStyle = {
+    paddingTop: 10,
+    paddingLeft: 2,
+    border: "solid",
+    borderWidth: 1,
+    marginBottom: 5,
   };
 
   return (
@@ -50,12 +37,11 @@ const Home = () => {
       </Togglable>
 
       {blogs.map((blog) => (
-        <Blog
-          key={blog.id}
-          blog={blog}
-          addLike={addLike}
-          deleteButton={removeBlog}
-        />
+        <div style={blogStyle}>
+          <a href={`/blogs/${blog.id}`}>
+            {blog.title} {blog.author}
+          </a>
+        </div>
       ))}
     </div>
   );

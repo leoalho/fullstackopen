@@ -4,7 +4,6 @@ import { useParams } from "react-router-dom";
 const User = () => {
   const users = useSelector((state) => state.users);
   const id = useParams().id;
-  //  const note = notes.find(n => n.id === Number(id))
   const user = users.find((n) => n.id === id);
 
   if (!user) {
