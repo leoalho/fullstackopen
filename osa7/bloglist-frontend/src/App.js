@@ -8,7 +8,12 @@ import Notification from "./components/Notification";
 import BlogForm from "./components/BlogForm";
 import Togglable from "./components/Togglable";
 import { createNotification } from "./reducers/notificationReducer";
-import blogReducer, { initializeBlogs, newBlog, voter } from "./reducers/blogReducer";
+import {
+  initializeBlogs,
+  newBlog,
+  voter,
+  deleter,
+} from "./reducers/blogReducer";
 import {
   BrowserRouter as Router,
   //Routes, Route, Link
@@ -17,7 +22,7 @@ import {
 const App = () => {
   const dispatch = useDispatch();
   const blogs = useSelector((state) => state.blogs);
-  console.log(blogs)
+  console.log(blogs);
   //const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -74,7 +79,9 @@ const App = () => {
       setBlogs(blogs);
       */
       dispatch(newBlog(blogObject));
-      dispatch(createNotification(`${blogObject.title} by ${blogObject.author} added`));
+      dispatch(
+        createNotification(`${blogObject.title} by ${blogObject.author} added`)
+      );
     } catch (exception) {
       dispatch(createNotification("Adding of blogpost unsuccesfull")); //alert
     }
@@ -82,7 +89,7 @@ const App = () => {
 
   const addLike = async (blog) => {
     try {
-      dispatch(voter(blog))
+      dispatch(voter(blog));
       //await blogService.updateLikes(blog);
       dispatch(createNotification("Updated likes"));
       //const blogs = await blogService.getAll();
@@ -96,7 +103,8 @@ const App = () => {
   const removeBlog = async (blog) => {
     if (window.confirm(`Remove ${blog.title}?`)) {
       try {
-        await blogService.deletePost(blog);
+        //await blogService.deletePost(blog);
+        dispatch(deleter(blog));
         dispatch(createNotification(`removed ${blog.title}`));
         //const blogs = await blogService.getAll();
         //blogs.sort((a, b) => (a.likes < b.likes ? 1 : -1));

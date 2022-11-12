@@ -13,9 +13,9 @@ const getAll = () => {
 };
 
 const getUsers = async () => {
-  const users = await axios.get("/api/users")
-  return users.data
-}
+  const users = await axios.get("/api/users");
+  return users.data;
+};
 
 const create = async (newBlog) => {
   const config = {

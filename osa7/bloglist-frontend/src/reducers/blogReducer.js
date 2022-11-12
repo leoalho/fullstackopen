@@ -30,14 +30,23 @@ export const newBlog = (content) => {
   };
 };
 
-export const voter = (id) => {
+export const voter = (blog) => {
   return async (dispatch) => {
-    await blogService.updateLikes(id)
+    await blogService.updateLikes(blog);
     const blogs = await blogService.getAll();
     blogs.sort((a, b) => (a.likes < b.likes ? 1 : -1));
     dispatch(setBlogs(blogs));
-  }
-}
+  };
+};
+
+export const deleter = (blog) => {
+  return async (dispatch) => {
+    await blogService.deletePost(blog);
+    const blogs = await blogService.getAll();
+    blogs.sort((a, b) => (a.likes < b.likes ? 1 : -1));
+    dispatch(setBlogs(blogs));
+  };
+};
 
 export const { setBlogs, appendBlogs } = blogSlice.actions;
 export default blogSlice.reducer;
