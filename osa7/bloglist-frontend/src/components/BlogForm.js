@@ -27,13 +27,7 @@ const BlogForm = ({ addBlog }) => {
       </div>
       <div>
         <label htmlFor="author">Author: </label>
-        <input
-          type="text"
-          value={author}
-          id="author"
-          name="author"
-          onChange={({ target }) => setAuthor(target.value)}
-        />
+        <input type="text" value={author} id="author" name="author" />
       </div>
       <div>
         <label htmlFor="url">Url: </label>

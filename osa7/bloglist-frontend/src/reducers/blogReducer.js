@@ -48,5 +48,13 @@ export const deleter = (blog) => {
   };
 };
 
+export const commenter = (comment, id) => {
+  return async (dispatch) => {
+    await blogService.createComment({ comment }, id);
+    const blogs = await blogService.getAll();
+    dispatch(setBlogs(blogs));
+  };
+};
+
 export const { setBlogs, appendBlogs } = blogSlice.actions;
 export default blogSlice.reducer;

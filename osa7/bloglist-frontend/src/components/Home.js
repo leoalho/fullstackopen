@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Togglable from "./Togglable";
 import BlogForm from "./BlogForm";
 
-import { newBlog, voter, deleter } from "../reducers/blogReducer";
+import { newBlog } from "../reducers/blogReducer";
 import { createNotification } from "../reducers/notificationReducer";
 
 const Home = () => {

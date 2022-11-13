@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { voter, deleter } from "../reducers/blogReducer";
-import { createNotification } from "../reducers/notificationReducer";
 import { useParams } from "react-router-dom";
+
+import { voter, deleter, commenter } from "../reducers/blogReducer";
+import { createNotification } from "../reducers/notificationReducer";
 
 const Blog = () => {
   const dispatch = useDispatch();
@@ -11,15 +12,21 @@ const Blog = () => {
   const id = useParams().id;
   const blog = blogs.find((n) => n.id === id);
   const [removeButton, setRemovebutton] = useState("inline");
+  const [comment, setComment] = useState("");
 
   useEffect(() => {
     if (
+      blog &&
       window.localStorage.getItem("loggedUser") &&
       blog.user.username === window.localStorage.getItem("loggedUser").username
     ) {
       setRemovebutton("inline");
     }
   }, []);
+
+  if (!blog) {
+    return null;
+  }
 
   const style = {
     display: removeButton,
@@ -45,9 +52,12 @@ const Blog = () => {
     }
   };
 
-  if (!blog) {
-    return null;
-  }
+  const addComment = async (event) => {
+    event.preventDefault();
+    dispatch(commenter(comment, id));
+    setComment("");
+    dispatch(createNotification("Comment added"));
+  };
 
   return (
     <div>
@@ -62,7 +72,8 @@ const Blog = () => {
           addLike(blog);
         }}
       >
-        Like
+        {" "}
+        Like{" "}
       </button>
       <br />
       Added by {blog.user.name}
@@ -76,6 +87,20 @@ const Blog = () => {
         {" "}
         Remove{" "}
       </button>
+      <h2>Comments</h2>
+      <form onSubmit={addComment}>
+        <input
+          type="text"
+          value={comment}
+          onChange={({ target }) => setComment(target.value)}
+        />
+        <button type="submit">add comment</button>
+      </form>
+      <ul>
+        {blog.comments.map((comment) => (
+          <li>{comment}</li>
+        ))}
+      </ul>
     </div>
   );
 };

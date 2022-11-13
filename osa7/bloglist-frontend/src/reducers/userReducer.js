@@ -6,7 +6,9 @@ const userSlice = createSlice({
   initialState: null,
   reducers: {
     setUser(state, action) {
-      blogService.setToken(action.payload.token);
+      if (action.payload) {
+        blogService.setToken(action.payload.token);
+      }
       return action.payload;
     },
   },

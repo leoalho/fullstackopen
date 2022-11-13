@@ -18,6 +18,18 @@ blogRouter.get('/:id', async (request, response, next) => {
   }
 })
 
+blogRouter.post('/:id/comments', async (request, response, next) => {
+  console.log(request.body.comment)
+  try{
+    const blog = await Blog.findById(request.params.id)
+    blog.comments.push(request.body.comment)
+    const result = await blog.save()
+    response.status(201).json(result)
+  }catch (exception){
+    next(exception)
+  }
+})
+
 blogRouter.post('/', middleware.userExtractor, async (request, response, next) => {
   const {title, author, url, likes} = request.body
   
