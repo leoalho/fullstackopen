@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import Button from "react-bootstrap/Button";
 
 import Notification from "./components/Notification";
 import LoginForm from "./components/LoginForm";
@@ -39,23 +40,27 @@ const App = () => {
   }
 
   return (
-    <Router>
-      <div>
-        <Link to="/">blogs </Link>
-        <Link to="/users">users</Link>
-        {user.name} logged in <button onClick={handleLogout}>Logout</button>
-      </div>
+    <div className="container">
+      <Router>
+        <div>
+          <Link to="/">blogs</Link> <Link to="/users">users</Link> {user.name}{" "}
+          logged in{" "}
+          <Button variant="outline-primary" onClick={handleLogout}>
+            Logout
+          </Button>
+        </div>
 
-      <Notification />
-      <h2>Blog app</h2>
+        <Notification />
+        <h2>Blog app</h2>
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/users" element={<Users />} />
-        <Route path="/users/:id" element={<User />} />
-        <Route path="/blogs/:id" element={<Blog />} />
-      </Routes>
-    </Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/users" element={<Users />} />
+          <Route path="/users/:id" element={<User />} />
+          <Route path="/blogs/:id" element={<Blog />} />
+        </Routes>
+      </Router>
+    </div>
   );
 };
 

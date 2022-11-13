@@ -1,4 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
+import { Table } from "react-bootstrap";
 
 import Togglable from "./Togglable";
 import BlogForm from "./BlogForm";
@@ -21,28 +22,23 @@ const Home = () => {
     }
   };
 
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: "solid",
-    borderWidth: 1,
-    marginBottom: 5,
-  };
-
   return (
     <div>
-      <h2>create new</h2>
       <Togglable buttonLabel="new post">
         <BlogForm addBlog={addBlog} />
       </Togglable>
-
-      {blogs.map((blog) => (
-        <div style={blogStyle}>
-          <a href={`/blogs/${blog.id}`}>
-            {blog.title} {blog.author}
-          </a>
-        </div>
-      ))}
+      <Table striped hover>
+        <tbody>
+          {blogs.map((blog) => (
+            <tr>
+              <td>
+                <a href={`/blogs/${blog.id}`}>{blog.title}</a>
+              </td>
+              <td>{blog.author}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
     </div>
   );
 };

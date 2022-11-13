@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import Button from "react-bootstrap/Button";
 
 import { voter, deleter, commenter } from "../reducers/blogReducer";
 import { createNotification } from "../reducers/notificationReducer";
@@ -67,18 +68,20 @@ const Blog = () => {
       {blog.url}
       <br />
       {blog.likes} likes
-      <button
+      <Button
+        variant="outline-primary"
         onClick={() => {
           addLike(blog);
         }}
       >
         {" "}
         Like{" "}
-      </button>
+      </Button>
       <br />
       Added by {blog.user.name}
       <br />
-      <button
+      <Button
+        variant="outline-primary"
         onClick={() => {
           removeBlog(blog);
         }}
@@ -86,7 +89,7 @@ const Blog = () => {
       >
         {" "}
         Remove{" "}
-      </button>
+      </Button>
       <h2>Comments</h2>
       <form onSubmit={addComment}>
         <input
@@ -94,7 +97,9 @@ const Blog = () => {
           value={comment}
           onChange={({ target }) => setComment(target.value)}
         />
-        <button type="submit">add comment</button>
+        <Button variant="outline-primary" type="submit">
+          add comment
+        </Button>
       </form>
       <ul>
         {blog.comments.map((comment) => (

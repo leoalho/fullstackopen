@@ -1,5 +1,6 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
+import Button from "react-bootstrap/Button";
 
 const BlogForm = ({ addBlog }) => {
   const [title, setTitle] = useState("");
@@ -27,7 +28,13 @@ const BlogForm = ({ addBlog }) => {
       </div>
       <div>
         <label htmlFor="author">Author: </label>
-        <input type="text" value={author} id="author" name="author" />
+        <input
+          type="text"
+          value={author}
+          id="author"
+          name="author"
+          onChange={({ target }) => setAuthor(target.value)}
+        />
       </div>
       <div>
         <label htmlFor="url">Url: </label>
@@ -39,9 +46,9 @@ const BlogForm = ({ addBlog }) => {
           onChange={({ target }) => setUrl(target.value)}
         />
       </div>
-      <button id="create-button" type="submit">
+      <Button variant="outline-primary" id="create-button" type="submit">
         create
-      </button>
+      </Button>
     </form>
   );
 };

@@ -19,7 +19,6 @@ blogRouter.get('/:id', async (request, response, next) => {
 })
 
 blogRouter.post('/:id/comments', async (request, response, next) => {
-  console.log(request.body.comment)
   try{
     const blog = await Blog.findById(request.params.id)
     blog.comments.push(request.body.comment)
