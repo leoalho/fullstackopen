@@ -153,21 +153,12 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    allBooks: async ()=>{
-      return Book.find({})
-    },
+    allBooks: async ()=> Book.find({}),
     allAuthors: async () => Author.find({}),
     bookCount: async () => Book.collection.countDocuments(),
     authorCount: async () => Author.collection.countDocuments(),
-    me: (root, args, context) => {
-      return context.currentUser
-    }
+    me: (root, args, context) => context.currentUser
   },
-  /*
-  Author: {
-    bookCount: (root) => Book.find({author.name: root.name}).count()
-  },
-  */
   
   Mutation: {
     addBook: async (root, args) => {
@@ -178,10 +169,18 @@ const resolvers = {
       }
       author = await Author.find({name: args.author})
       const book = new Book({...args, author: author[0]._id})
-      await book.save()
+      try{
+        await book.save()
+      } catch (error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: args,
+        })
+      }
+      
       return book
     },
     editAuthor: async (root, args) => {
+      
       const author = await Author.findOne({ name: args.name })
       author.born = args.setBornTo
       await author.save()
