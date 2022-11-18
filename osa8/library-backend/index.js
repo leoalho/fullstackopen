@@ -108,7 +108,7 @@ const typeDefs = gql`
   type Author {
     name: String!
     born: Int
-    bookCount: Int
+    books: Int
   }
   type Book {
     title: String!
@@ -153,7 +153,9 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    allBooks: async ()=> Book.find({}),
+    allBooks: async ()=> {
+      let books = await Book.find({}).populate('author')
+      return books},
     allAuthors: async () => Author.find({}),
     bookCount: async () => Book.collection.countDocuments(),
     authorCount: async () => Author.collection.countDocuments(),
@@ -170,7 +172,7 @@ const resolvers = {
 
       let author = await Author.find({name: args.author})
       if (author.length===0){
-        const newAuthor = new Author({ name: args.author})
+        const newAuthor = new Author({ name: args.author, bookCount: 1})
         const result = await newAuthor.save()
         var authorid = result._id
       }else{
