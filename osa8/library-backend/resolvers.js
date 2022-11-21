@@ -1,5 +1,8 @@
 const Book = require('./models/book')
 const Author = require('./models/author')
+const User = require('./models/user')
+const config = require('./config')
+const jwt = require('jsonwebtoken')
 const { gql, UserInputError, AuthenticationError } = require('apollo-server')
 const { PubSub } = require('graphql-subscriptions')
 const pubsub = new PubSub()

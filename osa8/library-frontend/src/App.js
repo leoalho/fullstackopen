@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { useApolloClient, useQuery } from '@apollo/client'
-import { ME } from './queries'
+import { useApolloClient, useQuery, useSubscription } from '@apollo/client'
+import { ME, BOOK_ADDED } from './queries'
 
 import Authors from './components/Authors'
 import Books from './components/Books'
@@ -15,6 +15,13 @@ const App = () => {
   const favorite = useQuery(ME)
 
   const client = useApolloClient()
+
+  useSubscription(BOOK_ADDED, {
+    onData: ({ data }) => {
+      window.alert(`${data.data.addBook.title} by ${data.data.addBook.author.name} added`)
+      setPage(page)
+    }
+  })
 
   const logout = () => {
     setToken(null)
