@@ -1,6 +1,8 @@
 const Book = require('./models/book')
 const Author = require('./models/author')
 const { gql, UserInputError, AuthenticationError } = require('apollo-server')
+const { PubSub } = require('graphql-subscriptions')
+const pubsub = new PubSub()
 
 const resolvers = {
   Query: {
@@ -55,6 +57,8 @@ const resolvers = {
       })
       await result.populate("author")
       
+      pubsub.publish('BOOK_ADDED', { addBook: book})
+
       return book
     },
     editAuthor: async (root, args, context) => {
@@ -98,6 +102,11 @@ const resolvers = {
       }
 
       return { value: jwt.sign(userForToken, config.JWT_SECRET) }
+    }
+  },
+  Subscription: {
+    addBook: {
+      subscribe: () => pubsub.asyncIterator('BOOK_ADDED')
     }
   }
 }
