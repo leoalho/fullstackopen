@@ -4,7 +4,7 @@ import Constants from 'expo-constants';
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: Constants.statusBarHeight,
+    paddingTop: 2*Constants.statusBarHeight,
     paddingBottom: Constants.statusBarHeight,
     backgroundColor: theme.colors.textPrimary
   },

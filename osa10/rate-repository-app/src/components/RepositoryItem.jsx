@@ -1,24 +1,28 @@
-import { Text, StyleSheet, Constants} from 'react-native';
+import { Text, StyleSheet, Image, View} from 'react-native';
 import theme from '../../theme';
+import LowerPart from './LowerPart';
+import UpperPart from './UpperPart';
 
 
 const styles = StyleSheet.create({
+    view: {
+        backgroundColor: '#ffffff'
+    },
     text: {
       fontSize: theme.fontSizes.body
-    }
+    },
+    tinyLogo: {
+        width: 50,
+        height: 50,
+      }
   });
 
 const RepositoryItem = ({item}) => {
     return(
-    <Text style={styles.text}>
-        {`Full name: ${item.fullName}
-        Description: ${item.description}
-        Language: ${item.language}
-        Stars: ${item.stargazersCount}
-        Forks: ${item.forksCount}
-        Reviews: ${item.reviewCount}
-        Rating: ${item.ratingAverage}`}
-    </Text>)
+    <View style={styles.view}>
+    <UpperPart item={item} />
+    <LowerPart item={item}/>
+    </View>)
 }
 
 export default RepositoryItem
