@@ -1,0 +1,23 @@
+import { StyleSheet, View, Pressable } from 'react-native';
+import RepositoryList from './RepositoryList';
+import AppBar from './AppBar';
+
+const styles = StyleSheet.create({
+  container: {
+    flexGrow: 1,
+    flexShrink: 1,
+  },
+});
+
+const Main = () => {
+  return (
+    <View style={styles.container}>
+        <Pressable>
+            <AppBar />
+        </Pressable>
+        <RepositoryList />
+    </View>
+  );
+};
+
+export default Main;
