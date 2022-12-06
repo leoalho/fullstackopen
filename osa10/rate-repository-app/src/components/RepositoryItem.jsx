@@ -1,4 +1,4 @@
-import { Text, StyleSheet, Image, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import theme from '../../theme';
 import LowerPart from './LowerPart';
 import UpperPart from './UpperPart';

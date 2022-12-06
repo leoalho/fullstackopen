@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
 const UpperRight = ({item}) => {
     return(
         <View>
-            <Text>{`${item.fullName}`}</Text>
+            <Text fontWeight="bold" fontSize="subheading">{`${item.fullName}`}</Text>
             <Text>{`${item.description}`}</Text>
             <Text style={styles.language}>{`${item.language}`}</Text>
         </View>
