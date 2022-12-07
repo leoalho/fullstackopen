@@ -2,6 +2,7 @@ import { FlatList, Text, View, StyleSheet } from 'react-native';
 //import {Text} from './Text';
 import RepositoryItem from './RepositoryItem';
 import useRepositories from '../hooks/useRepositories';
+import Constants from 'expo-constants';
 
 const styles = StyleSheet.create({
   separator: {
@@ -20,8 +21,7 @@ const renderItem = ({item}) => {
 
 const RepositoryList = () => {
     const repositories = useRepositories();
-    console.log(repositories)
-
+    //console.log(repositories)
     if (repositories._z.loading){
         return(
             <View>
@@ -33,7 +33,7 @@ const RepositoryList = () => {
     const repositoryNodes = repositories
         ? repositories._z.data.repositories.edges.map(edge => edge.node)
         : [];
-    console.log(repositoryNodes)
+
   return (
     <FlatList
       data={repositoryNodes}
