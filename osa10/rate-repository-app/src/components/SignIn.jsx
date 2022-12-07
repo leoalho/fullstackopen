@@ -37,7 +37,7 @@ const SignInForm = ({ onSubmit }) => {
         <FormikTextInput name="username" placeholder="Username" />
         </View>
         <View style={styles.textInput}>
-        <FormikTextInput name="password" placeholder="Password" />
+        <FormikTextInput name="password" placeholder="Password" secureTextEntry/>
         </View>
         <View style={styles.signInView}>
         <Pressable onPress={onSubmit}>
