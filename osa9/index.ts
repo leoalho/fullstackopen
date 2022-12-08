@@ -9,15 +9,15 @@ app.get('/hello', (_req, res) => {
 
 app.get('/bmi', (req, res) => {
 
-    const weight: number = parseInt(String(req.query.weight))
-    const height: number = parseInt(String(req.query.height))
-    const error: string = "Malformatted parameters"
+    const weight: number = parseInt(String(req.query.weight));
+    const height: number = parseInt(String(req.query.height));
+    const error = "Malformatted parameters";
 
     if (!height || !weight){
-        res.json({error}) 
+        res.json({error}); 
     }else{
-        const bmi: string = calculateBmi(height,weight)
-        res.json({weight, height, bmi})
+        const bmi: string = calculateBmi(height,weight);
+        res.json({weight, height, bmi});
     }
 });
 

@@ -12,14 +12,14 @@ const calculateBmi = (length: number, weight: number): string => {
         case bmi<30:
             return('Overwight');
         case bmi<40:
-            return('Obese')
+            return('Obese');
         default:
-            return('Morbidly Obese')
+            return('Morbidly Obese');
     }
-}
+};
 
-const l: number = Number(process.argv[2])
-const w: number = Number(process.argv[3])
+const l = Number(process.argv[2]);
+const w = Number(process.argv[3]);
 console.log(calculateBmi(l, w));
 
-export default calculateBmi
+export default calculateBmi;
