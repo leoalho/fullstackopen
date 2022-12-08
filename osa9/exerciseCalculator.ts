@@ -18,6 +18,15 @@ const calculateExercises = (hours: number[], target: number): result => {
 }
 
 const target = parseInt(process.argv[2])
+if (isNaN(target)){
+    throw new Error('Target not a number!')
+}
 const args = process.argv.slice(3)
 const hours = args.map(e => parseInt(e))
+hours.forEach((hour) => {
+    if (isNaN(hour)){
+        throw new Error('Hours not a number!')
+    }
+})
+
 console.log(calculateExercises(hours, target));
