@@ -62,10 +62,11 @@ const SignIn = () => {
     const onSubmit = async (values) => {
         const { username, password } = values;
         try {
-        const { data } = await signIn({ username, password });
-        authstorage.setAccessToken({accessToken: data.authenticate.accessToken})
+        const result = await signIn({ username, password });
+        authstorage.setAccessToken(result.data.authenticate.accessToken)
         client.resetStore()
-        console.log(data);
+        //console.log(result.data.authenticate.accessToken);
+        console.log(`getAccesToken ${authstorage.getAccessToken()}`)
         navigate("/")
         } catch (e) {
         console.log(e);

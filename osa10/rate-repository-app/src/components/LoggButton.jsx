@@ -25,17 +25,20 @@ const LoggButton = () => {
     const authstorage = useAuthStorage();
     const client = useApolloClient();
     const loggedIn = useLoggedIn();
-
-    const onSubmit = () => {
-        authstorage.removeAccessToken()
+    console.log(loggedIn)
+    const onSubmit = async () => {
+        await authstorage.removeAccessToken()
         client.resetStore()
     }
 
-    if (loggedIn){
-        return <View style={styles.textView}><Pressable onPress={onSubmit}><Text fontSize='subheading' style={styles.text}>Sign out</Text></Pressable></View>
+    try {
+        if (loggedIn.data.me){
+            return <View style={styles.textView}><Pressable onPress={onSubmit}><Text fontSize='subheading' style={styles.text}>Sign out</Text></Pressable></View>
+        }
+    } catch (e){
+        console.error(e)
     }
     return <View style={styles.textView}><Link to="./signin"><Text fontSize='subheading' style={styles.text}>Sign in</Text></Link></View>
-
 }
 
 export default LoggButton

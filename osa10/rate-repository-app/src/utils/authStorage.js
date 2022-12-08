@@ -6,18 +6,11 @@ class AuthStorage {
   }
 
   getAccessToken() {
-    const accessToken = AsyncStorage.getItem(
-        `${this.namespace}:accessToken`,
-      );
-  
-      return accessToken ? JSON.parse(accessToken) : [];
+    return AsyncStorage.getItem(`${this.namespace}:accessToken`);
   }
 
   setAccessToken(accessToken) {
-    AsyncStorage.setItem(
-        `${this.namespace}:accessToken`,
-        JSON.stringify(accessToken),
-      );
+    AsyncStorage.setItem(`${this.namespace}:accessToken`, accessToken);
   }
 
   removeAccessToken() {
