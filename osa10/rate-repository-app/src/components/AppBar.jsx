@@ -3,6 +3,7 @@ import Text from './Text'
 import theme from '../../theme';
 import Constants from 'expo-constants';
 import { Link } from "react-router-native";
+import LoggButton from './LoggButton';
 
 const styles = StyleSheet.create({
   container: {
@@ -23,7 +24,7 @@ const AppBar = () => {
     <View style={styles.container}>
         <ScrollView horizontal>
             <View style={styles.textView}><Link to="./"><Text fontSize='subheading' style={styles.text}>Repositories</Text></Link></View>
-            <View style={styles.textView}><Link to="./signin"><Text fontSize='subheading' style={styles.text}>Sign in</Text></Link></View>
+            <LoggButton />
         </ScrollView>
         
     </View>)
