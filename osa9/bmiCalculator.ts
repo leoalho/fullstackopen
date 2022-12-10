@@ -1,4 +1,4 @@
-const calculateBmi = (length: number, weight: number): string => {
+export const calculateBmi = (length: number, weight: number): string => {
 	const bmi: number = weight/((length/100)**2);
     switch (true){
         case bmi<16:
@@ -18,8 +18,8 @@ const calculateBmi = (length: number, weight: number): string => {
     }
 };
 
-const l = Number(process.argv[2]);
-const w = Number(process.argv[3]);
-console.log(calculateBmi(l, w));
-
-export default calculateBmi;
+if (process.argv.length>2){
+    const l = Number(process.argv[2]);
+    const w = Number(process.argv[3]);
+    console.log(calculateBmi(l, w));
+}
