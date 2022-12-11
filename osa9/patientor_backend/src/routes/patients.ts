@@ -1,5 +1,6 @@
 import express from 'express';
-import { getNonSensitiveEntries} from '../services/patientService';
+import { getNonSensitiveEntries, newPatient } from '../services/patientService';
+import { toNewPatient } from '../utils';
 
 const router = express.Router();
 
@@ -7,4 +8,18 @@ router.get('/', (_req, res) => {
     res.json(getNonSensitiveEntries());
   });
 
-export default router
+router.post('/', (req, res) => {
+    try{
+        const newPatientEntry = toNewPatient(req.body);
+        const new_patient = newPatient(newPatientEntry);
+        res.json(new_patient);
+    } catch (error: unknown){
+        let errorMessage = 'Something went wrong.';
+        if (error instanceof Error) {
+        errorMessage += ' Error: ' + error.message;
+        }
+        res.status(400).send(errorMessage);
+    }
+}); 
+  
+export default router;

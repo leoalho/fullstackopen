@@ -7,4 +7,4 @@ router.get('/', (_req, res) => {
     res.json(getEntries());
   });
 
-export default router
+export default router;
