@@ -9,8 +9,8 @@ export const getEntries = (): Array<Patient> => {
 };
 
 export const getNonSensitiveEntries = (): Omit<Patient, 'ssn'>[] => {
-    return patients.map(({id, name, dateOfBirth, gender, occupation}) => {
-        return {id, name, dateOfBirth, gender, occupation};
+    return patients.map(({id, name, dateOfBirth, gender, occupation, entries}) => {
+        return {id, name, dateOfBirth, gender, occupation, entries};
     });
 };
 
@@ -19,4 +19,8 @@ export const newPatient = (entry: NewPatient): Patient => {
     const new_patient: Patient = {id, ... entry};
     patients.push(new_patient);
     return new_patient;
+};
+
+export const getPatient = (id: string): Patient | undefined => {
+    return patients.find(patient=>patient.id===id);
 };

@@ -1,5 +1,5 @@
 import express from 'express';
-import { getNonSensitiveEntries, newPatient } from '../services/patientService';
+import { getNonSensitiveEntries, newPatient, getPatient } from '../services/patientService';
 import { toNewPatient } from '../utils';
 
 const router = express.Router();
@@ -20,6 +20,10 @@ router.post('/', (req, res) => {
         }
         res.status(400).send(errorMessage);
     }
-}); 
+});
+
+router.get('/:id', (req, res) => {
+    res.json(getPatient(req.params.id))
+})
   
 export default router;
