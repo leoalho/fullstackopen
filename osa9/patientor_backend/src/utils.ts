@@ -1,4 +1,5 @@
-import { NewPatient, Fields, Gender } from "./types";
+import { NewPatient, Fields, Gender, NewHospitalEntry, NewHealthCheckEntry, NewOccupationalEntry, HospitalEntryFields,
+    HealthCheckEntryFields, OccupationEntryFields } from "./types";
 
 export const toNewPatient = ({name, dateOfBirth, ssn, gender, occupation}: Fields): NewPatient => {
     const newPatient: NewPatient = {
@@ -10,6 +11,46 @@ export const toNewPatient = ({name, dateOfBirth, ssn, gender, occupation}: Field
         entries: []
     };
     return newPatient;
+};
+
+export const toNewHospitalEntry = (entry: HospitalEntryFields): NewHospitalEntry => {
+    const newHospitalEntry: NewHospitalEntry = {
+        description: parseString(entry.description),
+        date: parseString(entry.date),
+        specialist: parseString(entry.specialist),
+        type: "Hospital",
+        diagnosisCodes: entry.diagnosisCodes,
+        discharge: entry.discharge
+    };
+
+    return newHospitalEntry;
+};
+
+export const toNewOcupationalEntry = (entry: OccupationEntryFields): NewOccupationalEntry => {
+    const newEntry: NewOccupationalEntry = {
+        description: parseString(entry.description),
+        date: parseString(entry.date),
+        specialist: parseString(entry.specialist),
+        type: "OccupationalHealthcare",
+        diagnosisCodes: entry.diagnosisCodes,
+        employerName: parseString(entry.employerName),
+        sickLeave: entry.sickLeave,
+    };
+
+    return newEntry;
+};
+
+export const toNewHealthcheckEntry = (entry: HealthCheckEntryFields): NewHealthCheckEntry => {
+    const newEntry: NewHealthCheckEntry = {
+        description: parseString(entry.description),
+        date: parseString(entry.date),
+        specialist: parseString(entry.specialist),
+        type: "HealthCheck",
+        diagnosisCodes: entry.diagnosisCodes,
+        healthCheckRating: entry.healthCheckRating
+    };
+
+    return newEntry;
 };
 
 const parseString = (name: unknown): string => {

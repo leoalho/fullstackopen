@@ -29,26 +29,60 @@ interface sickLeave {
     endDate: string;
 }
 
-interface HealthCheckEntry extends BaseEntry {
+export interface HealthCheckEntry extends BaseEntry {
     type: "HealthCheck";
     healthCheckRating: HealthCheckRating;
 }
 
-interface HospitalEntry extends BaseEntry {
+export interface HospitalEntry extends BaseEntry {
     type: "Hospital";
     discharge: discharge;
 }
 
-interface OccupationalHealthcareEntry extends BaseEntry {
+export interface OccupationalHealthcareEntry extends BaseEntry {
     type: "OccupationalHealthcare";
     sickLeave?: sickLeave;
     employerName: string;
 }
 
 export type Entry =
-  | HospitalEntry
+  | HospitalEntry 
   | OccupationalHealthcareEntry
   | HealthCheckEntry;
+
+export type NewHospitalEntry = Omit<HospitalEntry, 'id'>;
+export type NewOccupationalEntry = Omit<OccupationalHealthcareEntry, 'id'>;
+export type NewHealthCheckEntry = Omit<HealthCheckEntry, 'id'>;
+
+export type HospitalEntryFields = {
+    description: string,
+    date: string,
+    specialist: string,
+    diagnosisCodes?: Array<Diagnose['code']>,
+    type: string,
+    discharge: discharge
+    sickLeave?: string,
+    employerName?: string;
+};
+
+export type HealthCheckEntryFields = {
+    description: string,
+    date: string,
+    specialist: string,
+    diagnosisCodes?: Array<Diagnose['code']>,
+    type: string,
+    healthCheckRating: HealthCheckRating;
+};
+
+export type OccupationEntryFields = {
+    description: string,
+    date: string,
+    specialist: string,
+    diagnosisCodes?: Array<Diagnose['code']>,
+    type: string,
+    sickLeave: sickLeave,
+    employerName: string;
+};
 
 export interface Patient {
     id: string,
