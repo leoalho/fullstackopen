@@ -19,9 +19,9 @@ const styles = StyleSheet.create({
 
 const RepositoryItem = ({item}) => {
     return(
-    <View style={styles.view}>
-    <UpperPart item={item} />
-    <LowerPart item={item}/>
+    <View testID="repositoryItem" style={styles.view}>
+        <UpperPart item={item} />
+        <LowerPart item={item}/>
     </View>)
 }
 

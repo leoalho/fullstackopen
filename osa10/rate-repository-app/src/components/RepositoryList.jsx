@@ -1,4 +1,4 @@
-import { FlatList, Text, View, StyleSheet } from 'react-native';
+import { FlatList, View, StyleSheet } from 'react-native';
 //import {Text} from './Text';
 import RepositoryItem from './RepositoryItem';
 import useRepositories from '../hooks/useRepositories';
@@ -18,31 +18,27 @@ const renderItem = ({item}) => {
     )
 }
 
-
-const RepositoryList = () => {
-    const repositories = useRepositories();
-    //console.log(repositories)
-    if (repositories._z.loading){
-        return(
-            <View>
-                <Text>Loading...</Text>
-            </View>
-        )
-    }
-
+export const RepositoryListContainer = ({ repositories }) => {
     const repositoryNodes = repositories
-        ? repositories._z.data.repositories.edges.map(edge => edge.node)
-        : [];
+      ? repositories.edges.map((edge) => edge.node)
+      : [];
+  
+    return (
+        <FlatList
+        key={(item) => item.id}
+        data={repositoryNodes}
+        ItemSeparatorComponent={ItemSeparator}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+      />
+    );
+  };
+  
+  const RepositoryList = () => {
+    const { repositories } = useRepositories();
+  
+    return <RepositoryListContainer repositories={repositories} />;
+  };
 
-  return (
-    <FlatList
-      key={(item) => item.id}
-      data={repositoryNodes}
-      ItemSeparatorComponent={ItemSeparator}
-      renderItem={renderItem}
-      keyExtractor={(item) => item.id}
-    />
-  );
-};
 
 export default RepositoryList;
