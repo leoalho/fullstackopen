@@ -32,7 +32,8 @@ const LoggButton = () => {
     }
 
     try {
-        if (loggedIn.data.me){
+        // oli aikaisemmin loggedIn.data.me
+        if (loggedIn && loggedIn.data.me){
             return <View style={styles.textView}><Pressable onPress={onSubmit}><Text fontSize='subheading' style={styles.text}>Sign out</Text></Pressable></View>
         }
     } catch (e){

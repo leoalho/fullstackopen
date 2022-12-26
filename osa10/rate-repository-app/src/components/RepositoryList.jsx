@@ -1,4 +1,5 @@
 import { FlatList, View, StyleSheet } from 'react-native';
+import { Link } from "react-router-native";
 //import {Text} from './Text';
 import RepositoryItem from './RepositoryItem';
 import useRepositories from '../hooks/useRepositories';
@@ -14,7 +15,9 @@ const ItemSeparator= () => <View style={styles.separator} />;
 
 const renderItem = ({item}) => {
     return(
-        <RepositoryItem  item={item} />
+        <Link to={`./repositories/${item.id}`}>
+        <RepositoryItem  item={item} button={false}/>
+        </Link>
     )
 }
 

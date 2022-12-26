@@ -1,5 +1,7 @@
-import { View, StyleSheet } from 'react-native';
-import Text from './Text';
+import { View, StyleSheet, Button } from 'react-native';
+import Text from '../Text';
+import * as Linking from 'expo-linking';
+
 
 const styles = StyleSheet.create({
   flexContainer: {
@@ -10,6 +12,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   }
 });
+
+const clicked = () => {
+    Linking.openURL(item.url);
+}
 
 const LowerPart = ({item}) => {
     return(
@@ -31,6 +37,7 @@ const LowerPart = ({item}) => {
             <Text style={styles.text}>Rating</Text>
         </View>
         </View>
+
     )
 }
 
