@@ -16,7 +16,7 @@ const validationSchema = yup.object().shape({
     password: yup
         .string()
         .required('Password is required')
-    });
+});
 
 const initialValues = {
   username: '',

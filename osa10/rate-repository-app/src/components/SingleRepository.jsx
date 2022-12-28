@@ -25,20 +25,21 @@ const styles = StyleSheet.create({
     },
     flexContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-around',
+        justifyContent: 'flex-start',
         backgroundColor: 'white',
         padding: 10,
-        margin: 5
       },
       rightText: {
         padding: 5,
-        margin: 15,
+        margin: 5,
+        marginRight: 35,
         //borderColor: 'black',
         //borderWidth: 1,
+        objectFit: 'fill'
       }
   });
   
-  const ItemSeparator= () => <View style={styles.separator} />;
+const ItemSeparator= () => <View style={styles.separator} />;
 
 const SingleRepository = () => {
     const { id } = useParams();
@@ -65,7 +66,7 @@ const SingleRepository = () => {
 
 }
 
-const ReviewItem = ({ review }) => {
+export const ReviewItem = ({ review }) => {
     return(
         <View style={styles.flexContainer}>
             <View style={styles.leftText}>
