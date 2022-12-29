@@ -3,7 +3,6 @@ import { Link } from "react-router-native";
 //import {Text} from './Text';
 import RepositoryItem from './RepositoryItem';
 import useRepositories from '../hooks/useRepositories';
-import Constants from 'expo-constants';
 
 const styles = StyleSheet.create({
   separator: {
