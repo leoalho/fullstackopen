@@ -10,7 +10,7 @@ const useDeleteReview = () => {
     );
 
     const deleteSingleReview = async (id) => {
-        console.log(id)
+        //console.log(id)
         await deleteReview({variables: {deleteReviewId: id}})
     }
 

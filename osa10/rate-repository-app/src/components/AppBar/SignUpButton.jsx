@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 
 const SignUpButton = () => {
     const loggedIn = useLoggedIn();
-    console.log(loggedIn)
+    //console.log(loggedIn)
     if (!loggedIn.loading && !loggedIn.data.me){
         return (
             <View style={styles.textView}><Link to="./signup"><Text fontSize='subheading' style={styles.text}>Sign Up</Text></Link></View>

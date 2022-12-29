@@ -66,7 +66,7 @@ const SignIn = () => {
         authstorage.setAccessToken(result.data.authenticate.accessToken)
         client.resetStore()
         //console.log(result.data.authenticate.accessToken);
-        console.log(`getAccesToken ${authstorage.getAccessToken()}`)
+        //console.log(`getAccesToken ${authstorage.getAccessToken()}`)
         navigate("/")
         } catch (e) {
         console.log(e);
